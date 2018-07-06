@@ -33,16 +33,15 @@ public class City extends DataSupport {
     public void setCityCode(int cityCode){
         this.cityCode = cityCode;
     }
-    public int getProvinceId(){
+
+
+    public int getProvinceId() {
         return provinceId;
     }
 
-
-
-
-
-
-
+    public void setProvinceId(int provinceId) {
+        this.provinceId = provinceId;
+    }
 
 
 }

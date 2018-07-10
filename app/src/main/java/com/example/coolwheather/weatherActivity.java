@@ -4,10 +4,13 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -41,17 +44,22 @@ public class weatherActivity extends AppCompatActivity {
 
     private ImageView bingPicImg;
 
+    public DrawerLayout drawerLayout;
+    private Button navButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(Build.VERSION.SDK_INT>=21){
-            View decorView = getWindow().getDecorView();
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
 
-        }
+
+        //状态栏 衔接
+     //   if(Build.VERSION.SDK_INT>=21){
+//            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE|View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+ //           getWindow().setStatusBarColor(Color.TRANSPARENT);
+
+ //       }
 
         setContentView(R.layout.activity_weather);
 
@@ -65,6 +73,8 @@ public class weatherActivity extends AppCompatActivity {
         forecastLayout = (LinearLayout) findViewById(R.id.forecast_layout);
         aqiText = (TextView) findViewById(R.id.api_text);
         pm25Text = (TextView) findViewById(R.id.pm25_text);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navButton = (Button) findViewById(R.id.nav_button);
         //comfortText = (TextView) findViewById(R.id.comfort_text);
         carWashText = (TextView) findViewById(R.id.car_wash_text);
         sportText = (TextView) findViewById(R.id.sport_text);
@@ -81,6 +91,15 @@ public class weatherActivity extends AppCompatActivity {
             requestWeather(weatherId);
         }
 
+
+        navButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+
+
         bingPicImg = (ImageView) findViewById(R.id.bing_pic_img);
         String bingPic = prefs.getString("bing_pic",null);
         if(bingPic != null){
@@ -88,6 +107,7 @@ public class weatherActivity extends AppCompatActivity {
         }else{
             loadBingPic();
         }
+
 
 
 
@@ -172,7 +192,7 @@ public class weatherActivity extends AppCompatActivity {
     //处理并展示Weather实体类中的数据
     private void showWeatherInfo(Weather weather){
         String cityName = weather.basic.cityName;
-        String updateTime = "2018-7-9";
+        String updateTime = "2018-7-10";
                 //weather.basic.update.updateTime.split(" ")[1];
         String degree = weather.now.temperature + "。C";
         String weatherInfo = weather.now.more.info;
